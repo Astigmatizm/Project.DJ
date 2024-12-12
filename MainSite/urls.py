@@ -17,10 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from SecondarySite.views import index
+from SecondarySite import views
 
 urlpatterns = [
     # path('MainSite/', include('MainSite.urls')),
     path('admin/', admin.site.urls),
-    path('SecondarySite')
+    path('', include('SecondarySite.urls')),
+    path('SecondarySite/', views.Categories),
 ]
