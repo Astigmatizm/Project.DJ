@@ -16,11 +16,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+# from django.conf.urls import handler404
 
-from SecondarySite.views import index
+# handler404 = 'SecondarySite.views.Page_Not_Found'
+
+from SecondarySite.views import page_not_found, bad_request, forbidden_page, server_error
 
 urlpatterns = [
-    # path('MainSite/', include('MainSite.urls')),
     path('admin/', admin.site.urls),
-    path('SecondarySite')
+    path('', include('SecondarySite.urls'))
 ]
+
+handler400 = bad_request
+handler403 = forbidden_page
+handler404 = page_not_found
+handler500 = server_error
+
+
