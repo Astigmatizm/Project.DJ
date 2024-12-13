@@ -1,22 +1,48 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseNotFound, Http404, HttpResponseServerError, HttpResponseBadRequest, \
     HttpResponseForbidden
+from django.template.loader import render_to_string
 
+menu = [{"title": "О сайте", "url_name": "about"},
+
+        {"title": "Добавить обьявление", "url_name": "add_page"},
+
+        {"title": "Обратная связь", "url_name": "contact"},
+
+        {"title": "Войти", "url_name": "login"}
+]
+
+
+data_db = [
+    {'id': 1, 'title': 'fttf ffff', 'content': 'biografy fttf ffff', 'is_published': True},
+    {'id': 2, 'title': 'fddf ffff', 'content': 'biografy fddf ffff', 'is_published': False},
+    {'id': 3, 'title': 'fyyf ffff', 'content': 'biografy fyyf ffff', 'is_published': True}
+]
 
 def index(request):
-    return HttpResponse("Страница работает!")
+    data = {
+        'title': 'Главная страница',
+        'menu': menu,
+        'posts': data_db,
+    }
 
-def Categories(request, cate_id):
-    return HttpResponse(f"<h2>Статья по категориям!</h2><p>id: {cate_id}</p>")
+    return render(request, 'layout/index.html/', context=data)
 
-def Categories_by_slug(request, cate_slug):
-    return HttpResponse(f"<h2>Статья по категориям!</h2><p>slug: {cate_slug}</p>")
+def about(request):
+    return render(request, 'layout/about.html/', {'title': 'О сайте', 'menu': menu})
 
-def Archive(request, year):
-    if year > 2024:
-        raise Http404("не найденно")
+def show_post(request, post_id):
+    return HttpResponse(f'Отображение статьти с id = {post_id}')
 
-    return HttpResponse(f"<h2>Архив по годам</h2><p>slug: {year}</p>")
+def add_page(request):
+    return HttpResponse('Добавление статьи')
+
+def contact(request):
+    return HttpResponse('Обратная связь')
+
+def login(request):
+    return HttpResponse('Авторизация')
+
 
 def bad_request(request, exception):    # error400
     return HttpResponseBadRequest('<h1>error 400. Некорректный Запрос</h1>')
